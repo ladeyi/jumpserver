@@ -43,6 +43,9 @@ LOG_LEVEL = config.get('base', 'log')
 IP = config.get('base', 'ip')
 PORT = config.get('base', 'port')
 
+#========= session ==========
+EXPIRE_TIME = config.get('session', 'expire_time')
+
 # ======== Connect ==========
 try:
     NAV_SORT_BY = config.get('connect', 'nav_sort_by')
