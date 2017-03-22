@@ -3,7 +3,7 @@ from jasset.models import Asset
 from jumpserver.api import *
 
 
-expire_time = EXPIRE_TIME
+expire_time = int(EXPIRE_TIME)
 
 def name_proc(request):
     user_id = request.user.id
