@@ -154,6 +154,16 @@ def asset_add(request):
                     password = request.POST.get('password', '')
                     password_encode = CRYPTOR.encrypt(password)
                     asset_save.password = password_encode
+                    username = request.POST.get('username', '')
+                    private_key = request.POST.get('key', '')
+                    private_key_dir = os.path.join(BASE_DIR, 'keys', username)
+                    private_key_path = os.path.join(private_key_dir, '%s.pem' % username)
+                    mkdir(private_key_dir)
+                    if private_key:
+                        with open(private_key_path, 'w') as f:
+                                f.write(private_key)
+                        os.chmod(private_key_path, 0600)
+                    asset_save.private_key_path = private_key_path
                 if not ip:
                     asset_save.ip = hostname
                 asset_save.is_active = True if is_active else False
