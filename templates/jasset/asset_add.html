@@ -68,7 +68,7 @@
 
                                             <label class="col-sm-1 control-label"> <span class="red-fonts"></span> </label>
                                             <div class="col-sm-4">
-                                                <input type="password" placeholder="Password" name="password" class="form-control">
+                                                <input id="flexible_password_input" type="password" placeholder="Password" name="password" class="form-control">
                                             </div>
 
                                             <p></p>
@@ -153,14 +153,19 @@
         rules: {
             check_ip: [/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])(\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])){3}$/, 'ip地址不正确'],
             check_port: [/^\d{1,5}$/, '端口号不正确'],
-            use_default_auth: function() {
+            use_default_auth: function () {
                 var str1 = $("#id_use_default_auth").is(":checked");
-                if (str1 == true){
+                if (str1 == true) {
                     var decide = false;
                 } else {
                     var decide = true;
                 }
-                return decide}
+                return decide
+            },
+            password_exist: function() {
+                var passwordIsEmpty = !$("#flexible_password_input").val();
+                return passwordIsEmpty
+            }
         },
         fields: {
             "ip": {
@@ -194,7 +199,7 @@
                 empty: true
             },
             "key": {
-                rule: "required(either)",
+                rule: "required(password_exist)",
                 tip: "输入密钥",
                 ok: "",
                 msg: {required: "密码和密钥必填一个!"}
