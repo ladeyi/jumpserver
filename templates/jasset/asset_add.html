@@ -70,7 +70,8 @@
                                             <div class="col-sm-4">
                                                 <input type="password" placeholder="Password" name="password" class="form-control">
                                             </div>
-                                            <div class="hr-line-dashed"></div>
+                                        </div>
+                                        <div class="form-group">
                                             <div class="col-sm-8">
                                                 <textarea class="form-control" name="key" placeholder="请复制粘贴私钥" rows="10" style="font-size: 9px;"></textarea>
                                                     <span class="help-block m-b-none">密钥和密码必填一项</span>
@@ -189,8 +190,8 @@
             "password": {
                 rule: "required(use_default_auth);length[0~64]",
                 tip: "输入密码",
-                ok: "",
-                empty: true
+                ok: ""
+
             },
             "key": {
                 rule: "required(use_default_auth)",
