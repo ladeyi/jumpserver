@@ -468,6 +468,12 @@ def mkdir(dir_name, username='', mode=755):
     if username:
         chown(dir_name, username)
 
+def rmfile(file_name):
+    """
+    删除资产时删除资产的key
+    """
+    cmd = 'rm -rf %s' % (file_name)
+    bash(cmd)
 
 def http_success(request, msg):
     return render_to_response('success.html', locals())

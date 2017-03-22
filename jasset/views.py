@@ -7,6 +7,7 @@ from jumpserver.models import Setting
 from jasset.forms import AssetForm, IdcForm
 from jasset.models import Asset, IDC, AssetGroup, ASSET_TYPE, ASSET_STATUS
 from jperm.perm_api import get_group_asset_perm, get_group_user_perm
+from uuid import uuid4
 
 
 @require_role('admin')
@@ -156,10 +157,10 @@ def asset_add(request):
                     asset_save.password = password_encode
                     username = request.POST.get('username', '')
                     private_key = request.POST.get('key', '')
-                    private_key_dir = os.path.join(BASE_DIR, 'keys', username)
-                    private_key_path = os.path.join(private_key_dir, '%s.pem' % username)
-                    mkdir(private_key_dir)
                     if private_key:
+                        private_key_dir = os.path.join(KEY_DIR, 'admin_key')
+                        private_key_path = os.path.join(private_key_dir, '%s-%s.pem' % (username, hostname))
+                        mkdir(private_key_dir)
                         with open(private_key_path, 'w') as f:
                                 f.write(private_key)
                         os.chmod(private_key_path, 0600)
@@ -201,6 +202,9 @@ def asset_del(request):
             for asset_id in asset_id_all.split(','):
                 asset = get_object(Asset, id=asset_id)
                 asset.delete()
+                key_file = asset.private_key_path
+                if key_file and os.path.isfile(key_file):
+                    rmfile(key_file)
 
     return HttpResponse(u'删除成功')
 
