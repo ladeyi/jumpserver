@@ -222,13 +222,18 @@ def asset_edit(request):
     asset = get_object(Asset, id=asset_id)
     if asset:
         password_old = asset.password
+        username_old = asset.username
+        hostname_old = asset.hostname
+        private_key_old = asset.private_key_path
     # asset_old = copy_model_instance(asset)
     af = AssetForm(instance=asset)
     if request.method == 'POST':
         af_post = AssetForm(request.POST, instance=asset)
         ip = request.POST.get('ip', '')
         hostname = request.POST.get('hostname', '')
+        usernmae_new = request.POST.get('username', '')
         password = request.POST.get('password', '')
+        private_key = request.POST.get('key', '')
         is_active = True if request.POST.get('is_active') == '1' else False
         use_default_auth = request.POST.get('use_default_auth', '')
         try:
@@ -252,6 +257,19 @@ def asset_edit(request):
                             af_save.password = password_encode
                         else:
                             af_save.password = password_old
+                        if private_key:
+                            private_key_dir = os.path.join(KEY_DIR, 'admin_key')
+                            private_key_path_old = os.path.join(private_key_dir, '%s-%s.pem' % (username_old, hostname_old))
+                            private_key_path = os.path.join(private_key_dir, '%s-%s.pem' % (usernmae_new, hostname))
+                            mkdir(private_key_dir)
+                            rmfile(private_key_path_old)
+                            with open(private_key_path, 'w') as f:
+                                f.write(private_key)
+                            os.chmod(private_key_path, 0600)
+                            af_save.private_key_path = private_key_path
+                        else:
+                            af_save.private_key_path = private_key_old
+
                     af_save.is_active = True if is_active else False
                     af_save.save()
                     af_post.save_m2m()
