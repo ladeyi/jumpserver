@@ -192,7 +192,12 @@ def asset_del(request):
     """
     asset_id = request.GET.get('id', '')
     if asset_id:
-        Asset.objects.filter(id=asset_id).delete()
+
+        asset = get_object(Asset, id=asset_id)
+        asset.delete()
+        key_file = asset.private_key_path
+        if key_file and os.path.isfile(key_file):
+            rmfile(key_file)
 
     if request.method == 'POST':
         asset_batch = request.GET.get('arg', '')
