@@ -173,7 +173,7 @@ def db_asset_alert(asset, username, alert_dic):
                 alert_info = [field_name, u'默认', name] if unicode(value[0]) == 'True' else \
                     [field_name, name, u'默认']
 
-        elif field in ['username', 'password']:
+        elif field in ['username', 'password', 'private_key_path']:
             continue
 
         elif field == 'is_active':

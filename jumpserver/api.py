@@ -74,6 +74,7 @@ def get_asset_info(asset):
     else:
         info['username'] = asset.username
         info['password'] = CRYPTOR.decrypt(asset.password)
+        info['ssh_key'] = asset.private_key_path
     try:
         info['port'] = int(asset.port)
     except TypeError:
