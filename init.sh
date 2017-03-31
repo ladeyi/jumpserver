@@ -5,6 +5,6 @@ trap '' SIGINT
 base_dir=$(dirname $0)
 
 export LANG='zh_CN.UTF-8'
-python $base_dir/connect.py >> /dev/null 2>&1
+python $base_dir/connect.py
 
 exit
